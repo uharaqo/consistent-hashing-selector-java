@@ -1,0 +1,72 @@
+plugins {
+    id "common"
+    id "java-library"
+    id "com.diffplug.spotless" version "6.11.0"
+//    id 'signing'
+    id 'maven-publish'
+//    id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
+}
+
+//publishing {
+//    publications {
+//        myLibrary(MavenPublication) {
+//            from components.java
+//        }
+//    }
+//
+//}
+//
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            from(components.java)
+//            pom {
+//                name = 'kubernetes-service-discovery-java'
+//                description = 'Kubernetes Service Discovery Library'
+//                url = 'https://github.com/uharaqo/kubernetes-service-discovery-java'
+//                licenses {
+//                    license {
+//                        name = 'The Apache License, Version 2.0'
+//                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    }
+//                }
+//                developers {
+//                    developer {
+//                        id = 'uharaqo'
+//                        name = 'uharaqo'
+//                    }
+//                }
+//                scm {
+//                    url = 'https://github.com/uharaqo/kubernetes-service-discovery-java'
+//                    connection = 'scm:git://github.com/uharaqo/kubernetes-service-discovery-java.git'
+//                    developerConnection = 'scm:git://github.com/uharaqo/kubernetes-service-discovery-java.git'
+//                }
+//            }
+//        }
+//    }
+////  repositories {
+////    maven {
+////      name = "OSSRH"
+////      url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+////      credentials {
+////        username = System.getenv("MAVEN_USERNAME")
+////        password = System.getenv("MAVEN_PASSWORD")
+////      }
+////    }
+////    maven {
+////      name = "GitHubPackages"
+////      url = "https://maven.pkg.github.com/uharaqo/kubernetes-service-discovery-java"
+////      credentials {
+////        username = System.getenv("GITHUB_ACTOR")
+////        password = System.getenv("GITHUB_TOKEN")
+////      }
+////    }
+////  }
+//}
+//
+////signing {
+////  def signingKey = findProperty("signingKey")
+////  def signingPassword = findProperty("signingPassword")
+////  useInMemoryPgpKeys(signingKey, signingPassword)
+////  sign publishing.publications.mavenJava
+////}
