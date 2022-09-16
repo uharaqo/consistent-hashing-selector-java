@@ -1,1 +1,1 @@
-# consistent-hash
+# consistent-hashing-selector-java

@@ -1,0 +1,10 @@
+plugins {
+    id "java-lib"
+    id "com.diffplug.spotless" version "6.11.0"
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes('Implementation-Title': project.name, 'Implementation-Version': project.version)
+    }
+}

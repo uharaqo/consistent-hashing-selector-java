@@ -1,0 +1,59 @@
+plugins {
+    id 'common'
+    id 'java-library'
+    id 'jacoco'
+    id "com.diffplug.spotless"
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+dependencies {
+    // util
+    api 'com.google.code.findbugs:jsr305:3.0.2'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    // test
+    testImplementation platform('org.junit:junit-bom:5.9.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+jacoco {
+    toolVersion = "0.8.8"
+}
+jacocoTestReport {
+    reports {
+        csv.required = true
+    }
+}
+
+spotless {
+    format 'misc', {
+        // define the files to apply `misc` to
+        target '*.gradle', '*.md', '.gitignore'
+
+        // define the steps to apply to those files
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+    java {
+        importOrder('java', 'javax')
+        removeUnusedImports()
+        googleJavaFormat().reflowLongStrings()
+//        licenseHeader '/* (C) $YEAR */' // or licenseHeaderFile
+    }
+}

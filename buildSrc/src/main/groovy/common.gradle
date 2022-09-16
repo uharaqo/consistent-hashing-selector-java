@@ -1,0 +1,7 @@
+group 'com.github.uharaqo.consistenthashing'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
