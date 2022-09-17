@@ -9,8 +9,10 @@
 *.tar.gz
 *.rar
 
+.git
 .gradle
 .idea
+.DS_Store
 build
 target
 out
