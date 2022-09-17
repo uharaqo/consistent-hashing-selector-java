@@ -8,3 +8,8 @@ tasks.named('jar') {
         attributes('Implementation-Title': project.name, 'Implementation-Version': project.version)
     }
 }
+
+dependencies {
+    testImplementation 'commons-codec:commons-codec:1.15'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+}
