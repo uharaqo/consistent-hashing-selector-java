@@ -1,4 +1,4 @@
-package com.github.uharaqo.consistenthashing;
+package io.github.uharaqo.consistenthashing;
 
 public interface HashFunction<K, V> {
 

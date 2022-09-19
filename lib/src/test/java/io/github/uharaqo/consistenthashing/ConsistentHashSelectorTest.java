@@ -1,4 +1,4 @@
-package com.github.uharaqo.consistenthashing;
+package io.github.uharaqo.consistenthashing;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Collections.emptyList;

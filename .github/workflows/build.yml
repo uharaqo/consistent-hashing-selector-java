@@ -34,8 +34,16 @@ jobs:
       - name: Run Test Coverage
         run: ./gradlew jacocoTestReport
 
-      - name: Generate JaCoCo badge
+      - name: Add coverage to PR
         id: jacoco
+        uses: madrapps/jacoco-report@v1.3
+        with:
+          paths: ${{ github.workspace }}/lib/build/reports/jacoco/test/jacocoTestReport.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 50
+          min-coverage-changed-files: 50
+
+      - name: Generate JaCoCo badge
         uses: cicirello/jacoco-badge-generator@v2
         with:
           jacoco-csv-file: lib/build/reports/jacoco/test/jacocoTestReport.csv
@@ -66,34 +74,14 @@ jobs:
             git push
           fi
 
-      - name: Comment on PR with coverage percentages
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          REPORT=$(<badges/coverage-summary.json)
-          COVERAGE=$(jq -r '.coverage' <<< "$REPORT")%
-          BRANCHES=$(jq -r '.branches' <<< "$REPORT")%
-          NEWLINE=$'\n'
-          BODY="## JaCoCo Test Coverage Summary Statistics${NEWLINE}* __Coverage:__ ${COVERAGE}${NEWLINE}* __Branches:__ ${BRANCHES}"
-          gh pr comment ${{github.event.pull_request.number}} -b "${BODY}"
-        continue-on-error: true
+      - name: Publish package
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: publish
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
 
-#  publish:
-#    name: Publish Artifacts
-#    needs: [build]
-#    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Set up JDK 11
-#        uses: actions/setup-java@v3
-#        with:
-#          distribution: 'adopt'
-#          java-version: '11'
-#          cache: 'gradle'
-#
 #      - name: Publish with Gradle
 #        env:
 #          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
@@ -101,3 +89,16 @@ jobs:
 #          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_SECRET }}
 #          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.PGP_PASSPHRASE }}
 #        run: ./gradlew publishToSonatype --no-daemon
+
+#      - name: Comment on PR with coverage percentages
+#        if: ${{ github.event_name == 'pull_request' }}
+#        run: |
+#          REPORT=$(<badges/coverage-summary.json)
+#          COVERAGE=$(jq -r '.coverage' <<< "$REPORT")%
+#          BRANCHES=$(jq -r '.branches' <<< "$REPORT")%
+#          NEWLINE=$'\n'
+#          BODY="## JaCoCo Test Coverage Summary Statistics${NEWLINE}* __Coverage:__ ${COVERAGE}${NEWLINE}* __Branches:__ ${BRANCHES}"
+#          gh pr comment ${{github.event.pull_request.number}} -b "${BODY}"
+#        continue-on-error: true
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

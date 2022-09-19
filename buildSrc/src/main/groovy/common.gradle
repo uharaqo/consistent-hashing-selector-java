@@ -1,5 +1,5 @@
-group 'com.github.uharaqo.consistenthashing'
-version '0.0.1-SNAPSHOT'
+group 'io.github.uharaqo'
+version '0.1.0-SNAPSHOT'
 
 repositories {
     mavenLocal()
