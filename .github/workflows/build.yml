@@ -81,24 +81,5 @@ jobs:
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-
-#      - name: Publish with Gradle
-#        env:
-#          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
-#          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
-#          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_SECRET }}
-#          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.PGP_PASSPHRASE }}
-#        run: ./gradlew publishToSonatype --no-daemon
-
-#      - name: Comment on PR with coverage percentages
-#        if: ${{ github.event_name == 'pull_request' }}
-#        run: |
-#          REPORT=$(<badges/coverage-summary.json)
-#          COVERAGE=$(jq -r '.coverage' <<< "$REPORT")%
-#          BRANCHES=$(jq -r '.branches' <<< "$REPORT")%
-#          NEWLINE=$'\n'
-#          BODY="## JaCoCo Test Coverage Summary Statistics${NEWLINE}* __Coverage:__ ${COVERAGE}${NEWLINE}* __Branches:__ ${BRANCHES}"
-#          gh pr comment ${{github.event.pull_request.number}} -b "${BODY}"
-#        continue-on-error: true
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.PGP_PASSWORD }}

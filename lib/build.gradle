@@ -1,8 +1,6 @@
 plugins {
     id 'java-lib'
     id 'com.diffplug.spotless' version '6.11.0'
-
-    id 'signing'
     id 'maven-publish'
 }
 
@@ -59,18 +57,5 @@ publishing {
                 password = System.getenv('MAVEN_PASSWORD')
             }
         }
-    }
-}
-if (hasProperty('signingPassword')) {
-    signing {
-        def signingKey = findProperty('signingKey')
-        def signingPassword = findProperty('signingPassword')
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign configurations.archives
-    }
-}
-javadoc {
-    if (JavaVersion.current().isJava9Compatible()) {
-        options.addBooleanOption('html5', true)
     }
 }

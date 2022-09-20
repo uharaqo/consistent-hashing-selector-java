@@ -3,6 +3,7 @@ plugins {
     id 'java-library'
     id 'jacoco'
     id "com.diffplug.spotless"
+    id 'sign-with-envvar'
 }
 
 sourceCompatibility = 11
@@ -38,6 +39,12 @@ jacocoTestReport {
     reports {
         csv.required = true
         xml.required = true
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
     }
 }
 
