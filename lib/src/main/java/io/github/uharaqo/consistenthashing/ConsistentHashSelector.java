@@ -1,4 +1,4 @@
-package com.github.uharaqo.consistenthashing;
+package io.github.uharaqo.consistenthashing;
 
 import java.util.Collection;
 import java.util.function.UnaryOperator;
@@ -26,6 +26,8 @@ public interface ConsistentHashSelector<K, V> {
   ConsistentHashSelector<K, V> cloneWith(UnaryOperator<Collection<V>> instancesFactory);
 
   /**
+   * Create a new selector
+   *
    * @see #create(Collection, HashFunction, int)
    */
   static <K, V> ConsistentHashSelector<K, V> create(

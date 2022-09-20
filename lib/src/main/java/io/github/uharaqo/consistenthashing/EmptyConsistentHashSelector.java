@@ -1,4 +1,4 @@
-package com.github.uharaqo.consistenthashing;
+package io.github.uharaqo.consistenthashing;
 
 import java.util.Collection;
 import java.util.Collections;
