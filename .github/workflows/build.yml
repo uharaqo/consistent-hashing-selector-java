@@ -19,20 +19,24 @@ jobs:
           ref: badges
           path: badges
 
-      - name: Set up JDK 11
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+      - name: Gradle build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.PGP_PASSWORD }}
 
-      - name: Build with Gradle
-        run: ./gradlew build --no-daemon
-
-      - name: Run Test Coverage
-        run: ./gradlew jacocoTestReport
+      - name: Gradle jacocoTestReport
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: jacocoTestReport
 
       - name: Add coverage to PR
         id: jacoco
@@ -75,11 +79,9 @@ jobs:
           fi
 
       - name: Publish package
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: publish
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.PGP_PRIVATE_KEY }}
-          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.PGP_PASSWORD }}
