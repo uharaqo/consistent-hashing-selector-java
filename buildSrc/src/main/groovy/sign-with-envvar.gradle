@@ -4,7 +4,7 @@ plugins {
 }
 
 signing {
-//    required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+    required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
 
     def signingKey = findProperty('signingKey') // provided by env var: ORG_GRADLE_PROJECT_signingKey
     def signingPassword = findProperty('signingPassword') // provided by env var: ORG_GRADLE_PROJECT_signingPassword
