@@ -6,6 +6,12 @@ plugins {
 
 // setup maven-publish and signing
 ext.setupSonatypePublish = { userName, repoName, artifactName, artifactDesc ->
+    tasks.named('jar') {
+        manifest {
+            attributes('Implementation-Title': project.name, 'Implementation-Version': project.version)
+        }
+    }
+
     publishing {
         publications {
             maven(MavenPublication) {
