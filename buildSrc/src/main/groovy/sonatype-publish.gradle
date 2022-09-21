@@ -1,0 +1,77 @@
+plugins {
+    id 'common'
+    id 'maven-publish'
+    id 'signing'
+}
+
+// setup maven-publish and signing
+ext.setupSonatypePublish = { userName, repoName, artifactName, artifactDesc ->
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                setupMavenPublication(it, userName, repoName, artifactName, artifactDesc)
+            }
+        }
+        repositories {
+            sonatypeRepository(it)
+        }
+    }
+
+    signFiles publishing.publications
+}
+
+// helper method to setup pom
+ext.setupMavenPublication = { it, userName, repoName, artifactName, artifactDesc ->
+    it.from components.java
+    it.artifactId = repoName
+
+    it.pom {
+        name = artifactName
+        description = artifactDesc
+        url = "https://github.com/${userName}/${repoName}"
+        scm {
+            url = "https://github.com/${userName}/${repoName}"
+            connection = "scm:git://github.com/${userName}/${repoName}.git"
+            developerConnection = "scm:git://github.com/${userName}/${repoName}.git"
+        }
+        licenses {
+            license {
+                name = 'The Apache License, Version 2.0'
+                url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+        }
+        developers {
+            developer {
+                id = userName
+                name = userName
+            }
+        }
+    }
+}
+
+// helper method to register the OSSRH repository
+ext.sonatypeRepository = { repositories ->
+    repositories.maven {
+        name = 'OSSRH'
+        def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+        def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+        url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        credentials {
+            username = System.getenv('MAVEN_USERNAME')
+            password = System.getenv('MAVEN_PASSWORD')
+        }
+    }
+}
+
+// helper method to sign files. this generates {filename}.asc files that are required by Sonatype
+ext.signFiles = { target ->
+    signing {
+        // provided by env var: ORG_GRADLE_PROJECT_signingKey
+        def signingKey = findProperty('signingKey')
+        // provided by env var: ORG_GRADLE_PROJECT_signingPassword
+        def signingPassword = findProperty('signingPassword')
+        useInMemoryPgpKeys(signingKey, signingPassword)
+
+        sign target
+    }
+}
