@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     testImplementation 'commons-codec:commons-codec:1.15'
-    testImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation 'org.assertj:assertj-core:3.24.0'
 }
 
 // sign and publish artifacts to Sonatype
